@@ -118,10 +118,59 @@ lecturer_torvalds = Lecturer('Линус', 'Торвальдс')
 lecturer_torvalds.courses_attached += ['Git', 'Linux', 'C++']
 
 student_valera = Student('Валера', 'Валеров', 'Мужской')
-student_inna = Student('Валера', 'Валеров', 'Мужской')
+student_valera.courses_in_progress = ['Python', 'Git']
+student_valera.finished_courses += ['HTML', 'CSS', 'JS']
 
-print(lecturer_torvalds.courses_attached)
+student_inna = Student('Инна', 'Иннова', 'Женский')
+student_inna.courses_in_progress = ['Git', 'Python']
+student_inna.finished_courses += ['HTML', 'CSS', 'PHP']
+
+reviewer_andrey = Reviewer('Андрей', 'Июльских')
+reviewer_mihail = Reviewer('Михаил', 'Елизаров')
+
+
+student_valera.grading_lecturer(lecturer_rossum, 'Python', 5)
+student_valera.grading_lecturer(lecturer_torvalds, 'Git', 8)
+
+student_inna.grading_lecturer(lecturer_rossum, 'Python', 7)
+student_inna.grading_lecturer(lecturer_torvalds, 'Git', 9)
+print(lecturer_rossum)
+print(lecturer_torvalds)
+
+
+reviewer_andrey.grading(student_valera, 'Python', 7)
+reviewer_andrey.grading(student_valera, 'Git', 2)
+reviewer_mihail.grading(student_inna, 'Python', 8)
+reviewer_mihail.grading(student_inna, 'Git', 7)
+print(student_valera)
+print(student_inna)
+
 
 # для подсчета средней оценки за домашние задания по всем студентам в рамках конкретного курса (в качестве аргументов принимаем список студентов и название курса);
-
 # для подсчета средней оценки за лекции всех лекторов в рамках курса (в качестве аргумента принимаем список лекторов и название курса).
+
+def grading_on_course(persone, course_name):
+    grade_count = []
+    persone_count = 0
+    for persone in persone:
+        if course_name in persone.grades:
+            grade_count += persone.grades[course_name]
+            persone_count += len(persone.grades[course_name])
+    
+    if len(grade_count) > 0:
+        return round(sum(grade_count) / persone_count, 1)
+    else:
+        return 0.0
+
+
+python_students_course_grade = grading_on_course([student_inna, student_valera], 'Python')
+git_students_course_grade = grading_on_course([student_inna, student_valera], 'Git')
+
+python_lecturer_course_grade = grading_on_course([lecturer_rossum, lecturer_torvalds], 'Python')
+git_lecturer_course_grade = grading_on_course([lecturer_torvalds, lecturer_rossum], 'Git')
+
+print(python_students_course_grade)
+print(git_students_course_grade)
+
+print(python_lecturer_course_grade)
+print(git_lecturer_course_grade)
